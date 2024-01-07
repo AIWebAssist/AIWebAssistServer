@@ -6,6 +6,7 @@ from scrape_anything.view import *
 from scrape_anything.act import *
 from scrape_anything.controllers import EnabledActions
 from scrape_anything.util import Logger
+from scrape_anything.util.stractures import ToolDescriptionPromptValues
 
 
 class ToolBox(BaseModel):
@@ -16,19 +17,19 @@ class ToolBox(BaseModel):
         ScrollRight(),
         ScrollUp(),
         ScrollDown(),
+        ScrollLeft(),
         Refresh(),
         HitAKey(),
         MessageUser(),
-        FinalAnswer()
+        FinalAnswer(),
+        GoToURL()
     ]
     tools: List[ToolInterface] = EnabledActions.filter_enabled(supoorted_tools)
 
-    # # tools that are abstracted from the agent
-    # final_answer_tool: ToolInterface = MessageUser()
 
     @property
     def tool_description(self) -> str:
-        return "\n".join([f"{tool.name}: {tool.description}" for tool in self.tools])
+        return ToolDescriptionPromptValues(self.tools)
 
     @property
     def tool_names(self) -> str:

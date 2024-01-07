@@ -9,8 +9,8 @@ import base64
 
 
 class Controller(ABC):
-    def __init__(self, user_task: str) -> None:
-        self.user_task = user_task
+    def __init__(self, _: str) -> None:
+        pass
 
     @abstractmethod
     def fetch_infomration_on_screen(self, output_folder: str, loop_num: int):
@@ -102,7 +102,7 @@ class Controller(ABC):
             file_name_html,
             scroll_ratio,
             url,
-            self.user_task,
+            incoming_data.task,
         )
 
     def extract_from_agent_memory(self,on_screen:pd.DataFrame,screenshot_png:str,output_folder:str,num_loops:int):

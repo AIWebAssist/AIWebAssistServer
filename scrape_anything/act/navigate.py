@@ -27,8 +27,8 @@ class FinalAnswer(ToolInterface):
     """the tool to use in the final answer"""
 
     name: str = "Final Guidance"
-    description: str = 'present on the screen final guidance to the user, this tool should be used only when you are sure there is not farther guideance since it will close the communication channel with the user. Input format: {{"message":"<text to present to the user>"}} '
-    example_script: str = "show_guidance"
+    description: str = 'present on the screen final guidance to the user, this tool should be used only when you are sure there is not farther guideance since it will close the communication channel with the user. Input format: {{"message":"<text_to_enter>"}} '
+    example_script: str = "show_final_guidance"
 
     def process_tool_arg(self, **kwarg):
         return {"message": kwarg["message"]}

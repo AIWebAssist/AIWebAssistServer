@@ -1,7 +1,7 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS, cross_origin
 from scrape_anything import Agent
-from scrape_anything import TextOnlyLLM, VisionBaseLLM
+from scrape_anything import TextOnlyLLM, VisionBaseLLM,TestAllTools
 from scrape_anything import RemoteFeedController
 from scrape_anything.util import DataBase,Logger
 from scrape_anything import OutGoingData, IncommingData, Error
@@ -84,7 +84,7 @@ class Server:
             max_loops=max_message,
         )
         agnet = Agent(
-            llm=TextOnlyLLM(),
+            llm=TestAllTools(),
             max_loops=max_message,
             session_id=DataBase.get_session_id(self.experiment_uuid),
         )

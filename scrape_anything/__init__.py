@@ -1,5 +1,5 @@
 from .auto_agent import Agent
-from .think import TextOnlyLLM, VisionBaseLLM
+from .think import TextOnlyLLM, VisionBaseLLM,TestAllTools
 from .controllers import (
     WebDriverController,
     RemoteFeedController,

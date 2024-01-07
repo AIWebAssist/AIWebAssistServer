@@ -25,3 +25,13 @@ class ScrollRight(ToolInterface):
         "Scroll the web page to the right by half the screen width, no input"
     )
     example_script: str = "scroll_right"
+
+
+class ScrollLeft(ToolInterface):
+    """Scroll the web page to the left by half the screen width"""
+
+    name: str = "Scroll Left"
+    description: str = (
+        "Scroll the web page to the left by half the screen width, no input"
+    )
+    example_script: str = "scroll_left"

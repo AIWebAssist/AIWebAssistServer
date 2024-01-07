@@ -3,7 +3,7 @@ import threading
 import traceback
 
 from pydantic import BaseModel
-
+from typing import List
 
 from scrape_anything.util import *
 from scrape_anything.view import *
@@ -31,7 +31,7 @@ class Agent(BaseModel):
         )
         on_screen = None
         try:
-            previous_responses = []
+            previous_responses = ExecutionStatusPromptValues()
             num_loops = 1
 
             (
@@ -54,8 +54,8 @@ class Agent(BaseModel):
                 Logger.info(f"starting iteration number {num_loops}")
                 _, screenshot_changed = controller.extract_from_agent_memory(on_screen,screenshot_stream,self.session_id,num_loops)
 
-                if len(previous_responses) != 0 and not screenshot_changed:
-                    previous_responses[-1] += f"{previous_responses[-1]}. Notice! the user screen wasn't affected by this action."
+                if not previous_responses.is_empty() and not screenshot_changed:
+                    previous_responses.append("Notice! the user screen wasn't affected by this action.")
 
                 parsing_status = False
                 execution_status = False
@@ -70,8 +70,8 @@ class Agent(BaseModel):
                         tool_description=self.tool_box.tool_description,
                         tool_names=self.tool_box.tool_names,
                         task_to_accomplish=task_to_accomplish,
-                        previous_responses="\n".join(previous_responses),
-                        on_screen_data=on_screen.rename_axis("index").to_csv(float_format=f'%.2f'),
+                        previous_responses=previous_responses,
+                        on_screen_data=DataFramePromptValues(on_screen),
                         screen_size=screen_size,
                         scroll_ratio=scroll_ratio,
                         screenshot_png=screenshot_png,
@@ -165,7 +165,7 @@ class Agent(BaseModel):
                 DataBase.store_exection_status(
                     message, session_id=self.session_id, call_in_seassion=num_loops
                 )
-                previous_responses.append(message)
+                previous_responses.set(tool,message)
 
         except Exception as e:
             Logger.error(f"reporting fatel to controler, reason={str(e)},{traceback.format_exc()}")
